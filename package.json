@@ -1,0 +1,13 @@
+{
+  "name": "spinnergy",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "install-all": "npm --prefix client install && npm --prefix server install",
+    "dev": "concurrently "npm --prefix server run dev" "npm --prefix client start"",
+    "build-client": "npm --prefix client run build"
+  },
+  "dependencies": {
+    "concurrently": "^8.0.0"
+  }
+}

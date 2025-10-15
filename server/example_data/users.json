@@ -1,0 +1,28 @@
+[
+  {
+    "_id": "1",
+    "name": "Alice",
+    "email": "alice@example.com",
+    "password": "hashed_password_here",
+    "score": 250,
+    "isAdmin": true,
+    "spinsLeft": 3,
+    "history": [
+      { "points": 100, "date": "2025-10-01T12:00:00Z" },
+      { "points": 150, "date": "2025-10-02T15:30:00Z" }
+    ]
+  },
+  {
+    "_id": "2",
+    "name": "Bob",
+    "email": "bob@example.com",
+    "password": "hashed_password_here",
+    "score": 200,
+    "isAdmin": false,
+    "spinsLeft": 1,
+    "history": [
+      { "points": 100, "date": "2025-10-02T13:00:00Z" },
+      { "points": 100, "date": "2025-10-03T16:45:00Z" }
+    ]
+  }
+]
