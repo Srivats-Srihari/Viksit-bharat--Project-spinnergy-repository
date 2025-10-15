@@ -10,11 +10,14 @@
   "author": "Srivats Srihari",
   "license": "MIT",
   "dependencies": {
-    "express": "^4.19.2",
+    "bcryptjs": "^2.4.3",
     "cors": "^2.8.5",
-    "dotenv": "^16.4.5",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "express-rate-limit": "^6.10.0",
     "helmet": "^7.0.0",
-    "concurrently": "^8.2.0",
-    "express-rate-limit": "^6.7.0"
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.1.1",
+    "openai": "^4.10.0"
   }
 }
