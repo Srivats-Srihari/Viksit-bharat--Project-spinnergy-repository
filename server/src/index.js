@@ -18,8 +18,9 @@ connectDB(process.env.MONGO_URI);
 
 // Middlewares
 app.use(helmet());
-app.use(cors({ origin: '*' })); // Adjust origin as needed
+app.use(cors()); // Adjust origin as needed
 app.use(express.json());
+app.use(bodyParser.json);
 app.use(rateLimit({ windowMs: 60 * 1000, max: 100 })); // limit to 100 requests per minute
 
 // API routes
