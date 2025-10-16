@@ -1,8 +1,13 @@
-const express = require("express");
-const { processGameData } = require("../controllers/gameController");
+// server/src/routes/game.js
+import express from "express";
+import { handleEnergyUpdate, handleTetrisEvent } from "../controllers/gameController.js";
 
 const router = express.Router();
 
-router.post("/submit", processGameData);
+// Accept energy point data from Arduino/Microbit
+router.post("/energy", handleEnergyUpdate);
 
-module.exports = router; // <---- THIS is critical
+// Accept Tetris event updates
+router.post("/tetris", handleTetrisEvent);
+
+export default router;
