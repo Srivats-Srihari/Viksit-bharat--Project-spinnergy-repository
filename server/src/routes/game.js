@@ -1,15 +1,10 @@
-const express = require('express');
+// server/src/routes/game.js
+import express from "express";
+import { processGameData } from "../controllers/gameController.js";
+
 const router = express.Router();
-const { spin, leaderboard, history } = require('../controllers/gameController');
-const { authenticate } = require('../middleware/authMiddleware');
 
-// /api/game/spin (protected)
-router.post('/spin', authenticate, spin);
+// POST endpoint for game data submission
+router.post("/submit", processGameData);
 
-// /api/game/leaderboard (public)
-router.get('/leaderboard', leaderboard);
-
-// /api/game/history (protected)
-router.get('/history', authenticate, history);
-
-module.exports = router;
+export default router;
