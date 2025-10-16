@@ -1,57 +1,45 @@
 // server/src/controllers/gameController.js
 import OpenAI from "openai";
-import fetch from "node-fetch";
 
 const client = new OpenAI({
-  apiKey: process.env.OPENAI_API_KEY,
+  apiKey: process.env.OPENAI_API_KEY
 });
 
-// Example in-memory leaderboard (Mongo optional)
-let leaderboard = [];
-
-// Utility to generate motivational message
-async function getMotivation(energy, score) {
+// Handles incoming game data and returns feedback/suggestions
+export const processGameData = async (req, res) => {
   try {
-    const prompt = `A user just earned ${energy} energy points and scored ${score} in Spinnergy. 
-    Write a 1-line futuristic motivational message.`;
+    const { energyPoints, username } = req.body;
 
-    const chat = await client.chat.completions.create({
+    // Basic response if OpenAI is down or unreachable
+    if (!client.apiKey) {
+      return res.status(200).json({
+        message: "OpenAI key not found. Using fallback response.",
+        advice: `Good job, ${username}! You've earned ${energyPoints} points.`
+      });
+    }
+
+    // Generate AI feedback
+    const response = await client.responses.create({
       model: "gpt-4o-mini",
-      messages: [{ role: "user", content: prompt }],
+      input: [
+        {
+          role: "user",
+          content: `A player named ${username} has ${energyPoints} energy points. 
+          Generate a short motivational message and one energy-saving tip.`
+        }
+      ]
     });
 
-    return chat.choices[0].message.content.trim();
-  } catch (err) {
-    console.error("OpenAI API error:", err);
-    return "Keep the energy flowing!";
-  }
-}
+    const aiMessage =
+      response.output[0]?.content[0]?.text ||
+      `Great work, ${username}! You’ve collected ${energyPoints} points!`;
 
-// POST /api/game/update
-export async function updateGameData(req, res) {
-  try {
-    const { username, energy, score } = req.body;
-
-    if (!username) return res.status(400).json({ error: "Missing username" });
-
-    const msg = await getMotivation(energy, score);
-
-    // Add to leaderboard (replace with DB in production)
-    leaderboard.push({ username, energy, score, message: msg, time: new Date() });
-    leaderboard = leaderboard.sort((a, b) => b.energy - a.energy).slice(0, 10);
-
-    res.json({
-      status: "success",
-      message: msg,
-      leaderboard,
+    res.status(200).json({ message: aiMessage });
+  } catch (error) {
+    console.error("Error in processGameData:", error);
+    res.status(500).json({
+      error: "Error processing game data",
+      details: error.message
     });
-  } catch (err) {
-    console.error("Error in updateGameData:", err);
-    res.status(500).json({ error: "Server error" });
   }
-}
-
-// GET /api/game/leaderboard
-export async function getLeaderboard(req, res) {
-  res.json({ leaderboard });
-}
+};
