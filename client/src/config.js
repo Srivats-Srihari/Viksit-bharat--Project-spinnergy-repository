@@ -1,1 +1,1 @@
-export const SERVER_BASE = process.env.REACT_APP_SERVER_BASE || "http://localhost:4000";
+export const SERVER_BASE = "https://viksit-bharat-project-spinnergy-9itq.onrender.com" || "http://localhost:4000";
